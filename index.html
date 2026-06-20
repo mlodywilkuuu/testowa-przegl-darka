@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root { --accent: #6366f1; --bg: #f8fafc; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; flex-direction: column; height: 100vh; }
+        
+        #toolbar { padding: 12px; background: rgba(255,255,255,0.7); backdrop-filter: blur(15px); display: flex; gap: 10px; border-bottom: 1px solid #e2e8f0; }
+        #urlInput { flex-grow: 1; padding: 10px 20px; border-radius: 25px; border: 1px solid #cbd5e1; outline: none; }
+        
+        button { padding: 8px 16px; border-radius: 20px; border: none; background: var(--accent); color: white; cursor: pointer; transition: 0.2s; }
+        button:hover { opacity: 0.9; }
+        
+        webview { flex-grow: 1; margin: 15px; border-radius: 20px; background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <button onclick="addTab()">+ Karta</button>
+        <input type="text" id="urlInput" placeholder="Wpisz adres lub wyszukaj...">
+        <button onclick="navigate()">Przejdź</button>
+    </div>
+    
+    <div id="viewContainer" style="display:flex; flex-grow:1;"></div>
+
+    <script>
+        function addTab() {
+            const container = document.getElementById('viewContainer');
+            const view = document.createElement('webview');
+            view.src = 'https://www.google.com';
+            view.style.width = '100%';
+            container.innerHTML = ''; // Czyści poprzednią kartę (uproszczone)
+            container.appendChild(view);
+        }
+
+        function navigate() {
+            const val = document.getElementById('urlInput').value;
+            const url = val.startsWith('http') ? val : 'https://www.google.com/search?q=' + encodeURIComponent(val);
+            document.querySelector('webview').loadURL(url);
+        }
+        
+        addTab(); // Startowa karta
+    </script>
+</body>
+</html>
